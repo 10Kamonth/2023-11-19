@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="10">
+    <title>Fancy Auto-Refreshing Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+
+        #refreshMessage {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #timerContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #timerBar {
+            width: 100%;
+            height: 20px;
+            background-color: #eee;
+            margin-top: 20px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #4CAF50, #8AE02B);
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            position: absolute;
+            border-radius: 10px;
+            animation: fillAndFadeOut 10s forwards;
+        }
+
+        #digitalClock {
+            font-size: 36px;
+            color: #333;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        @keyframes fillAndFadeOut {
+            0% { width: 0; }
+            10% { width: 10%; }
+            20% { width: 20%; }
+            30% { width: 30%; }
+            40% { width: 40%; }
+            50% { width: 50%; }
+            60% { width: 60%; }
+            70% { width: 70%; }
+            80% { width: 80%; }
+            90% { width: 90%; }
+            100% { width: 100%; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="refreshMessage">This page will automatically refresh every 10 seconds.</div>
+    
+    <div id="timerContainer">
+        <div id="timerBar">
+            <div id="progressBar"></div>
+        </div>
+        <div id="digitalClock"></div>
+    </div>
+
+    <script>
+        var progressBar = document.getElementById('progressBar');
+        var digitalClock = document.getElementById('digitalClock');
+
+        progressBar.style.width = '0%';
+        var initialCountdownSeconds = 10;
+        var progressPerSecond = 100 / initialCountdownSeconds;
+        var width = 0;
+
+        var interval = setInterval(function() {
+            width += progressPerSecond;
+            progressBar.style.width = width + '%';
+
+            if (width >= 100) {
+                clearInterval(interval);
+                width = 0;
+                progressBar.style.width = '0%';
+            }
+
+            var secondsLeft = initialCountdownSeconds - Math.floor(width / progressPerSecond);
+            digitalClock.textContent = formatTime(secondsLeft);
+        }, 1000);
+
+        function formatTime(seconds) {
+            var minutes = Math.floor(seconds / 60);
+            var remainingSeconds = seconds % 60;
+
+            if (remainingSeconds < 10) {
+                remainingSeconds = '0' + remainingSeconds;
+            }
+
+            return minutes + ':' + remainingSeconds;
+        }
+    </script>
+    <!-- Your page content goes here -->
+</body>
+</html>
